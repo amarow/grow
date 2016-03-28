@@ -1,15 +1,19 @@
 package de.ama.grow.body;
 
 import de.ama.grow.env.Environment;
+import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
-import javafx.scene.paint.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
-import javafx.scene.paint.Color;
+
+import static javafx.scene.input.MouseEvent.MOUSE_ENTERED;
 
 
-public class Cell {
+public class Cell implements EventHandler<MouseEvent> {
 
     private int id;
     private int width;
@@ -23,13 +27,15 @@ public class Cell {
 
     public Cell(int width, Color color, Sequence sequenz, boolean box) {
         this.width = width;
-        shape = box ? new Box(width-width/5d, width-width/5d, width-width/5d) : new Sphere(width/2d);
+        shape = box ? new Box(width - width / 5d, width - width / 5d, width - width / 5d) : new Sphere(width / 2d);
         shape.setMaterial(new PhongMaterial(color));
+        shape.setOnMouseEntered(this);
+
         this.id = Environment.get().getNewCellId();
         this.sequenz = sequenz;
     }
 
-    protected void split(Body body) {
+    private void split(Body body) {
 
         if (Environment.get().isFull()) return;
         if (sequenz == null) return;
@@ -90,7 +96,7 @@ public class Cell {
     }
 
     private double getWidth() {
-      return width;
+        return width;
     }
 
     private Point3D movePoint(Body body, Direction direction, Point3D point) {
@@ -150,7 +156,7 @@ public class Cell {
     }
 
 
-    protected void mutate(Body body) {
+    private void mutate(Body body) {
 //        color = Util.randomColor();
 //        if(sequenz.length()>0){
 //            sequenz = sequenz.substring(1);
@@ -188,7 +194,7 @@ public class Cell {
         shape.setTranslateZ(origin.getZ());
     }
 
-    public void setSequenz(Sequence sequenz) {
+    private void setSequenz(Sequence sequenz) {
         this.sequenz = sequenz;
     }
 
@@ -198,5 +204,13 @@ public class Cell {
 
     public Shape3D getShape() {
         return shape;
+    }
+
+    @Override
+    public void handle(MouseEvent event) {
+        if (event.getEventType().equals(MOUSE_ENTERED)) {
+            shape.setMaterial(new PhongMaterial(Color.BURLYWOOD));
+        }
+
     }
 }

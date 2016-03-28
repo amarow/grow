@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
-import java.io.StringReader;
 import java.net.URL;
 
 public class Editor extends Application{
@@ -40,6 +39,10 @@ public class Editor extends Application{
         Environment.get().incrementMaxCells();
     }
 
+
+    public Editor() {
+    }
+
     @FXML
     void startPressed(ActionEvent event) {
         Stage stage = new Stage();
@@ -52,14 +55,18 @@ public class Editor extends Application{
         startEnvironment(space);
     }
 
-    void startEnvironment(Space space) {
+
+    private void startEnvironment(Space space) {
 
         Environment.get().stop();
 
         Sequence sequence =null;
 
+
+
         if (Util.isEmpty(scriptText.getText())) {
-            scriptText.setText("Turld");
+            fileName.setText("/Users/ama/dev/grow3d/src/de/ama/grow/script/grow.txt");
+            scriptText.setText(Util.readFile(new File(fileName.getText())));
         }
 
         if (Util.isNotEmpty(scriptText.getText())) {
