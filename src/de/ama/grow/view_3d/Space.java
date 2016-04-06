@@ -36,7 +36,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.NamedArg;
 import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
@@ -44,12 +43,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
-import java.util.Collection;
 
 /**
  * @author cmcastil
@@ -59,15 +53,14 @@ public class Space {
     private Scene scene = null;
     final Group root = new Group();
     final Xform axisGroup = new Xform();
-    final Xform modelGroup = new Xform();
     final Xform world = new Xform();
     final PerspectiveCamera camera = new PerspectiveCamera(true);
     final Xform cameraXform = new Xform();
     final Xform cameraXform2 = new Xform();
     final Xform cameraXform3 = new Xform();
     private static final double CAMERA_INITIAL_DISTANCE = -450;
-    private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
-    private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
+    private static final double CAMERA_INITIAL_X_ANGLE = 20.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = 10.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 50.0;
@@ -89,7 +82,7 @@ public class Space {
     Timeline timeline = null;
 
     public Scene start() {
-        scene = new Scene(root, 1400, 1000, true);
+        scene = new Scene(root, 1400, 1000, true, SceneAntialiasing.BALANCED);
 
         root.getChildren().add(world);
         root.setDepthTest(DepthTest.ENABLE);
@@ -100,7 +93,7 @@ public class Space {
         scene.setFill(Color.GREY);
         handleKeyboard();
         handleMouse();
-        autoRotate();
+//        autoRotate();
         return scene;
     }
 

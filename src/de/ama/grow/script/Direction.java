@@ -1,8 +1,6 @@
-package de.ama.grow.body;
+package de.ama.grow.script;
 
 import javafx.geometry.Point3D;
-
-import java.awt.*;
 
 
 public enum Direction {
@@ -32,7 +30,7 @@ public enum Direction {
         throw new IllegalArgumentException("can not calc clockwise for direction "+this);
     }
 
-    public Direction conterClockwise() {
+    public Direction antiClockwise() {
         switch (this){
             case u:     return l;
             case r:     return u;
@@ -41,19 +39,20 @@ public enum Direction {
             case f:     return d;
             case b:     return u;
         }
-        throw new IllegalArgumentException("can not calc conterClockwise for direction "+this);
+        throw new IllegalArgumentException("can not calc antiClockwise for direction "+this);
     }
 
     public Point3D translate(Point3D origin, double distance){
         switch (this){
-            case u: return origin.add(0,-distance,0);
-            case r: return origin.add(distance,0,0);
-            case d: return origin.add(0,distance,0);
-            case l: return origin.add(-distance,0,0);
-            case b: return origin.add(0,0,-distance);
-            case f: return origin.add(0,0,distance);
+            case u: return origin.add(0,distance,0);
+            case r: return origin.add(-distance,0,0);
+            case d: return origin.add(0,-distance,0);
+            case l: return origin.add(distance,0,0);
+            case b: return origin.add(0,0,distance);
+            case f: return origin.add(0,0,-distance);
         }
         throw new IllegalArgumentException(String.format("can not translate for direction=%s, distance=%d", this, distance));
     }
+
 
 }

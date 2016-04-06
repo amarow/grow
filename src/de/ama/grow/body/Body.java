@@ -1,10 +1,10 @@
 package de.ama.grow.body;
 
+import de.ama.grow.script.Sequence;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.shape.Shape3D;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +55,9 @@ public class Body extends Group {
         }
     }
 
+    public int getCellCount(){
+        return cells.size();
+    }
 
     @Override
     public String toString() {
@@ -81,11 +84,12 @@ public class Body extends Group {
         return age;
     }
 
-    public void removeCell(Cell cell) {
+    public void removeCell(Cell cell, boolean visual) {
         synchronized (cells){
-            Cell remove = cells.remove(cell.getOrigin());
-            if (remove==null){
-                System.out.println("remove = " + remove);
+            cells.remove(cell.getOrigin());
+            if(visual){
+                Shape3D shape = cell.getShape();
+                getChildren().remove(shape);
             }
         }
     }

@@ -1,9 +1,8 @@
-package de.ama.grow.script;
+package de.ama.grow.app;
 
 
 import de.ama.grow.body.Body;
-import de.ama.grow.body.Sequence;
-import de.ama.grow.env.Environment;
+import de.ama.grow.script.Sequence;
 import de.ama.grow.util.Util;
 import de.ama.grow.view_3d.Space;
 import javafx.application.Application;
@@ -39,13 +38,14 @@ public class Editor extends Application{
         Environment.get().incrementMaxCells();
     }
 
+    private Stage stage = null;
 
     public Editor() {
     }
 
     @FXML
     void startPressed(ActionEvent event) {
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("3D View");
         Space space = new Space();
@@ -91,7 +91,6 @@ public class Editor extends Application{
         launch(args);
     }
 
-    private Stage stage = null;
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -112,6 +111,9 @@ public class Editor extends Application{
         }
     }
 
+    public void setTitleText(String text){
+        stage.setTitle(text);
+    }
     public void setStatusText(String text){
         statusText.setText(text);
     }

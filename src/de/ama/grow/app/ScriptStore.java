@@ -1,10 +1,11 @@
-package de.ama.grow.script;
+package de.ama.grow.app;
 
-import de.ama.grow.body.Sequence;
-import de.ama.grow.env.Environment;
+import de.ama.grow.script.Sequence;
 import de.ama.grow.util.Util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,8 +88,10 @@ public class ScriptStore {
 
         if(key.equalsIgnoreCase("maxcells")){
                 Environment.get().setMaxCells(Integer.parseInt(value));
+        } else if(key.equalsIgnoreCase("pause")){
+                Environment.get().setPause(Integer.parseInt(value));
         } else if(key.equalsIgnoreCase("cellsize")){
-                Environment.get().setCellSize(Integer.parseInt(value));
+                Environment.get().setCellSize(Double.parseDouble(value));
         } else if(key.equalsIgnoreCase("shape")){
                 Environment.get().setShapeBox("box".equalsIgnoreCase(value));
         } else {

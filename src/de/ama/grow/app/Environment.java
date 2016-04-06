@@ -1,15 +1,13 @@
-package de.ama.grow.env;
+package de.ama.grow.app;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 import de.ama.grow.body.Body;
-import de.ama.grow.script.Editor;
 import de.ama.grow.util.Util;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 
 public class Environment {
@@ -25,7 +23,7 @@ public class Environment {
     private List<Body> bodies = new ArrayList<>();
 
     private static Environment instance=null;
-    private int cellSize;
+    private double cellSize;
     private Editor editor;
     private boolean shapeBox;
 
@@ -59,7 +57,7 @@ public class Environment {
     }
 
     public boolean isFull() {
-        return idGenerator >= maxCells;
+        return getCellCount() >= maxCells;
     }
 
     public void incrementMaxCells() {
@@ -79,7 +77,11 @@ public class Environment {
     }
 
     public int getCellCount(){
-        return idGenerator;
+        int ret = 0;
+        for (Body body : bodies) {
+           ret += body.getCellCount();
+        }
+        return ret;
     }
 
     public int getNewCellId() {
@@ -99,11 +101,11 @@ public class Environment {
         }
     }
 
-    public void setCellSize(int cellSize) {
+    public void setCellSize(double cellSize) {
         this.cellSize = cellSize;
     }
 
-    public int getCellSize() {
+    public double getCellSize() {
         return cellSize;
     }
 
@@ -123,6 +125,10 @@ public class Environment {
         this.shapeBox = shapeBox;
     }
 
+    public void setStatusText(String s) {
+        editor.setStatusText(s);
+    }
+
     private class Timer extends Thread {
 
         @Override
@@ -137,7 +143,7 @@ public class Environment {
                             for (Body body : bodies) {
                                 body.liveDay();
                             }
-                            editor.setStatusText(format("max cells:%d cells:%d day:%d", getMaxCells(), idGenerator , getDay()));
+                            editor.setTitleText(format("max cells:%d cells:%d day:%d", getMaxCells(), idGenerator , getDay()));
                         }
                     });
                 } catch (Exception e) {

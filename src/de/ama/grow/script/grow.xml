@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grow maxcells="10000" pause="10">
+
+
+        <sequence id="leaf" directions="urld" wait="100" replicate="true" jump="true" push="false" />
+
+        <cell id="leaf" color="GREEN" size="4" shape="box" maxcells="2000">
+           <sequence ref="leaf" repeat="10"/>
+        </cell>
+
+        <cell id="trunk" color="BROWN" >
+            <sequence id="trunk" directions="urld" wait="100" replicate="true" jump="true" push="false" />
+        </cell>
+
+        <body id="B1" x="1" y="1" z="1" maxcells="10000">
+            <cell ref="leaf"/>
+            <cell ref="trunk"/>
+        </body>
+
+
+</grow>
+
+

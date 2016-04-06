@@ -1,5 +1,12 @@
 package de.ama.grow.util;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.awt.*;
 import java.io.*;
 import java.util.Random;
@@ -108,6 +115,47 @@ public class Util {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
     }
+
+
+    public static <T> T readJaxbObject(File file, Class<T> type ) throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(type);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        return (T) jaxbUnmarshaller.unmarshal(file);
+    }
+
+    public static void writeJaxbObject(File file, Object object) throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        jaxbMarshaller.marshal(object,file);
+    }
+
+
+    public static void writeXStream(File file, XStream stream, Object o) {
+        if (stream == null) {
+            stream = new XStream(new DomDriver());
+        }
+        try {
+            stream.toXML(o, new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Object readXStream(File file, XStream stream) {
+        if (stream == null) {
+            stream = new XStream(new DomDriver());
+        }
+        try {
+            InputStream is = new FileInputStream(file);
+            return stream.fromXML(is);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

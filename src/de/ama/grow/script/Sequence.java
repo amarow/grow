@@ -1,10 +1,10 @@
-package de.ama.grow.body;
+package de.ama.grow.script;
 
-import de.ama.grow.env.Environment;
-import de.ama.grow.script.ScriptStore;
-
-import java.awt.*;
+import de.ama.grow.app.Environment;
+import de.ama.grow.app.ScriptStore;
+import de.ama.grow.body.Cell;
 import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +13,18 @@ public class Sequence {
 
     private static final String NUMERIC = "0123456789";
     private static final String TYPE = "GTLWBCE/(";
-    private static final String BEHAVIOR = "pjs";
+    private static final String BEHAVIOR = "pjswe";
     private static final String DIRECTION = "ulrdfb";
 
 
     private List<Part> parts = new ArrayList<>();
     private Sequence nextSequenz = null;
-    private int repeats = 0;
+    private int repeats;
     private boolean push = true;
     private boolean jump;
     private boolean square;
+    private int lifeDays ;
+    private int wait;
 
     public Sequence clone(){
         Sequence clone = new Sequence();
@@ -31,13 +33,14 @@ public class Sequence {
         clone.repeats = this.repeats;
         clone.push = this.push;
         clone.jump = this.jump;
-        clone.square = this.square;
+        clone.wait = this.wait;
+        clone.lifeDays = this.lifeDays;
         return clone;
     }
 
     public Cell createCell(int i) {
         Part part = getPart(i);
-        int width = Math.max(2,Environment.get().getCellSize());
+        double width = Math.max(0.5d,Environment.get().getCellSize());
         boolean box = Environment.get().isShapeBox();
         switch (part.name) {
             case "G":
@@ -115,6 +118,10 @@ public class Sequence {
                 if (c == 'p') s.push = true;
                 if (c == 'j') s.jump = true;
                 if (c == 's') s.square = true;
+                if (c == 'w') s.wait += 100;
+                if (c == 'e'){
+                    s.lifeDays += 1000;
+                }
             } else if (is(c, NUMERIC)) {
                 num += c;
             } else if (is(c, DIRECTION)) {
@@ -183,26 +190,29 @@ public class Sequence {
                 "parts=" + parts +
                 ", nextSequenz=" + (nextSequenz!=null) +
                 ", repeats=" + repeats +
+                ", lifeDays=" + lifeDays +
                 ", push=" + push +
                 ", jump=" + jump +
                 ", square=" + square +
                 '}';
     }
 
-///////////////////////////////////////////////////////////////////
+    public int getWait() {
+        return wait;
+    }
+
+    public int getLifeDays() {
+        return lifeDays;
+    }
+
+    ///////////////////////////////////////////////////////////////////
 
     public static class Part {
         public String name;
         public Direction direction;
 
-        public Part() {
-        }
 
         public Part(String name, Direction direction) {
-            this(name, direction, 0);
-        }
-
-        public Part(String name, Direction direction, int repeat) {
             this.name = name;
             this.direction = direction;
         }

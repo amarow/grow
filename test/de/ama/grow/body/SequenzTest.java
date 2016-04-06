@@ -1,6 +1,7 @@
 package de.ama.grow.body;
 
-import de.ama.grow.script.ScriptStore;
+import de.ama.grow.app.ScriptStore;
+import de.ama.grow.script.Sequence;
 import de.ama.grow.util.Util;
 import junit.framework.TestCase;
 
